@@ -316,7 +316,7 @@ function Promt({
         } ${paramChatId ? "fixed bottom-5 mr-1" : ""} w-[96%] md:w-[100%]`}
       >
         <div
-          className={`relative shadow shadow-purple-300  rounded-xl px-4 py-4`}
+          className={`relative shadow shadow-purple-200  rounded-xl px-4 py-4`}
         >
           <textarea
             type="text"

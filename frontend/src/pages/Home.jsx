@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Promt from "../components/Promt";
-import { Code, Eye, LogOut, PanelTopOpen, SquarePen } from "lucide-react";
+import { PanelTopOpen} from "lucide-react";
 import logo from "/genify1.webp";
 import CodeView from "../components/CodeView";
+import { motion, useMotionTemplate, useMotionValue, animate, easeInOut } from 'motion/react'
 
 
 function Home() {
@@ -18,11 +19,23 @@ function Home() {
   const [promt, setPromt] = useState([]);
 
 
-  return (
-    <div className="flex h-screen text-white overflow-hidden">
-      <div className="fixed inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]!"></div>
+  const Colors = ["#DD335C", "#ff5e57", "#e073c5", "#1E67C6", "#CE84CF"];
+  const color = useMotionValue(Colors[0]);
 
-      {/* <div className="fixed inset-0 -z-10 h-full w-full bg-white [background:radial-gradient(125%_125%_at_50%_10%,#fff_40%,#63e_100%)]"></div> */}
+  useEffect(() => {
+    animate(color, Colors, {
+      ease: easeInOut,
+      duration: 10,
+      repeat: Infinity,
+      repeatType: "mirror",
+    })
+  }, [])
+
+  const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%,#020617 50%, ${color})`;
+  const boxShadow = useMotionTemplate`0px 4px 24px ${color}`;
+
+  return (
+    <motion.div style={{ backgroundImage, boxShadow }} className="flex h-screen text-white overflow-hidden">
       <div
         className={`${
           isSidebarOpen.historyBar
@@ -132,7 +145,7 @@ function Home() {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

@@ -6,6 +6,7 @@ import { checkAuth } from "./features/auth/authThunks";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
+import logo from "/download.png";
 
 function App() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -16,7 +17,8 @@ function App() {
   }, [dispatch]);
 
   return (
-    <>
+    <div className="bg-gray-950 relative  min-h-[100vh] overflow-hidden w-full">
+      <img src={logo} alt="" className="absolute z-0 inset-0" />
       <Toaster position="top-center" />
       <Routes>
         <Route
@@ -38,7 +40,7 @@ function App() {
           element={isAuthenticated ? <Navigate to="/" /> : <Register />}
         />
       </Routes>
-    </>
+    </div>
   );
 }
 

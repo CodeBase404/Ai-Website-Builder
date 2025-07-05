@@ -146,14 +146,14 @@ function Sidebar({
           <input
             type="text"
             placeholder="Search chats..."
-            className="w-full mt-3 px-3 py-2 pl-10 rounded-xl bg-[#191818] text-white placeholder-gray-400 focus:outline-none"
+            className="w-full mt-3 px-3 py-2 pl-10 rounded-xl shadow shadow-gray-500/80 text-white placeholder-gray-400 focus:outline-none"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Search className="absolute top-5.5 left-3 w-5 h-5 text-gray-400" />
         </div>
         {/* Chat List */}
-        <div className="flex-1 overflow-auto h-[82%]  py-3 space-y-1">
+        <div className="flex-1 overflow-auto max-h-[73%] py-3 scroll-hidden space-y-1">
           {chats.length > 0 ? (
             chats.filter((chat) => {
               const messageText =
@@ -209,7 +209,7 @@ function Sidebar({
       </div>
 
       {/* Footer */}
-      <div className="pb-2 border-t border-gray-600">
+      <div className="fixed bottom-0 pb-2 border-t border-gray-600">
         <div className="flex items-center gap-2 pl-2 cursor-pointer my-3">
           <img src={icon} alt="profile" className="rounded-full w-8 h-8" />
           <span className="text-gray-300 font-bold">
