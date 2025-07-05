@@ -1,0 +1,139 @@
+import { useState } from "react";
+import Sidebar from "../components/Sidebar";
+import Promt from "../components/Promt";
+import { Code, Eye, LogOut, PanelTopOpen, SquarePen } from "lucide-react";
+import logo from "/genify1.webp";
+import CodeView from "../components/CodeView";
+
+
+function Home() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState({
+    workflowBar: false,
+    historyBar: false,
+  });
+  const [lastPrompt, setLastPrompt] = useState("");
+  const [lastChatId, setLastChatId] = useState(null);
+  const [initialFiles, setInitialFiles] = useState({});
+    const [sandboxFiles, setSandboxFiles] = useState({});
+  const [promt, setPromt] = useState([]);
+
+
+  return (
+    <div className="flex h-screen text-white overflow-hidden">
+      <div className="fixed inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]!"></div>
+
+      {/* <div className="fixed inset-0 -z-10 h-full w-full bg-white [background:radial-gradient(125%_125%_at_50%_10%,#fff_40%,#63e_100%)]"></div> */}
+      <div
+        className={`${
+          isSidebarOpen.historyBar
+            ? "w-50 lg:w-60 fixed md:relative top-0 left-0 h-full z-100"
+            : "w-0"
+        }`}
+      >
+        <Sidebar
+          isSidebarOpen={isSidebarOpen.historyBar}
+          setIsSidebarOpen={setIsSidebarOpen}
+          setPromt={setPromt}
+          setSandboxFiles={setSandboxFiles}
+        />
+      </div>
+
+      {/* Main content */}
+      <div
+        className={`flex-1 flex  ${
+          isSidebarOpen.historyBar ? "w-[82%]" : "w-full"
+        } `}
+      >
+        <div
+          className={`w-full ${
+            promt.length === 0 ? "w-full" : " lg:w-[50%]"
+          } h-full`}
+        >
+          <div
+            className={` ${
+              isSidebarOpen.historyBar ? "hidden-visible" : ""
+            }  w-full border-b lg:border-none border-gray-800 bg-transparent left-0 flex  justify-between p-1.5 px-4`}
+          >
+            <div
+              className="flex gap-1"
+              onClick={() =>
+                setIsSidebarOpen((prev) => ({
+                  ...prev,
+                  historyBar: !prev.historyBar,
+                }))
+              }
+            >
+              <div
+                className={`flex items-center gap-1.5 text-[18px] font-bold ${
+                  isSidebarOpen.historyBar ? "hidden" : ""
+                } text-gray-200 py-1`}
+              >
+                <img
+                  src={logo}
+                  alt="DeepSeek Logo"
+                  className="h-7"
+                />
+                Webify
+              </div>
+              <button className="cursor-pointer rounded-xl active:scale-95  p-1.5">
+                {isSidebarOpen.historyBar ? (
+                  <PanelTopOpen className="w-6 h-6 rotate-90" />
+                ) : (
+                  <PanelTopOpen className="w-6 h-6 -rotate-90" />
+                )}
+              </button>
+            </div>
+            <div
+              onClick={() =>
+                setIsSidebarOpen((prev) => ({
+                  ...prev,
+                  workflowBar: !prev.workflowBar,
+                }))
+              }
+              className="lg:hidden flex items-center gap-1"
+            >
+              <div className="text-[16px] font-bold">Preview</div>
+              <button className="flex cursor-pointer rounded-xl active:scale-95  p-1.5">
+                {isSidebarOpen.workflowBar ? (
+                  <PanelTopOpen className="w-6 h-6 -rotate-90" />
+                ) : (
+                  <PanelTopOpen className="w-6 h-6 rotate-90" />
+                )}
+              </button>
+            </div>
+          </div>
+          <div
+            className={`h-[93.8%] ${
+              promt.length === 0 ? "" : "lg:w-120"
+            } px-2 flex items-center`}
+          >
+            <Promt
+              promt={promt}
+              setPromt={setPromt}
+                 setInitialFiles={setInitialFiles}
+              onPromptComplete={(input, chatId) => {
+                setLastPrompt(input);
+                setLastChatId(chatId);
+              }}
+              setIsSidebarOpen={setIsSidebarOpen}
+            />
+          </div>
+        </div>
+
+        <div
+          className={`h-full w-full text-black lg:relative pt-5 lg:pt-9 fixed top-12 lg:top-0 z-50 lg:px-0 lg:mr-2 ${
+            promt.length === 0 ? "hidden" : ""
+          } ${
+            isSidebarOpen.workflowBar ? "translate-x-0" : " translate-x-full"
+          } lg:translate-x-0 transition-all duration-500`}
+        >
+          <div className="h-[92%] mx-2 select-none lg:h-[98%] backdrop-blur-2xl rounded-2xl shadow shadow-sky-500">
+            <CodeView prompt={lastPrompt} chatId={lastChatId} initialFiles={initialFiles} setSandboxFiles={setSandboxFiles} sandboxFiles={sandboxFiles}/>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Home;
